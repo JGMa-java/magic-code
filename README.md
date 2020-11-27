@@ -1,6 +1,6 @@
 # magic-code
-一些高级java技术总结
-
+一些高级java技术总结<br>
+springboot文档：https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-logging
 ## 1.quartz
 ### 创建时间
 > 2020-11-26
