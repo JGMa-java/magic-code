@@ -30,3 +30,9 @@ spring:
             # 线程优先级
             threadPriority: 5
             threadsInheritContextClassLoaderOfInitializingThread: true
+  mvc:
+    static-path-pattern: /**
+    view:
+      # template目录映射，thymeleaf
+      prefix: /
+      suffix: .html
