@@ -41,14 +41,12 @@ public class GlobalExceptionHandler {
         Map<String, Object> resultMap = new HashMap<>(4);
         resultMap.put("code", "100001");
         String msg = null;
-        String field = null;
         /// BindException
         if (e instanceof BindException) {
             // getFieldError获取的是第一个不合法的参数(P.S.如果有多个参数不合法的话)
             FieldError fieldError = ((BindException) e).getFieldError();
             if (fieldError != null) {
-                field = fieldError.getField();
-                msg = fieldError.getDefaultMessage();
+                msg = fieldError.getField() + fieldError.getDefaultMessage();
             }
             /// MethodArgumentNotValidException
         } else if (e instanceof MethodArgumentNotValidException) {
@@ -56,8 +54,7 @@ public class GlobalExceptionHandler {
             // getFieldError获取的是第一个不合法的参数(P.S.如果有多个参数不合法的话)
             FieldError fieldError = bindingResult.getFieldError();
             if (fieldError != null) {
-                field = fieldError.getField();
-                msg = fieldError.getDefaultMessage();
+                msg = fieldError.getField() + fieldError.getDefaultMessage();
             }
             /// ValidationException 的子类异常ConstraintViolationException
         } else if (e instanceof ConstraintViolationException) {
