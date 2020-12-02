@@ -35,7 +35,7 @@ public class MessageProducer extends Thread{
 
     @Override
     public void run() {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 2; i++) {
             String name = Thread.currentThread().getName();
             MessageQueue queue = new MessageQueue();
             queue.setTitle("redis消息队列");

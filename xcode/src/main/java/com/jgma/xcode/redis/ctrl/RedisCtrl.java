@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -51,26 +53,63 @@ public class RedisCtrl {
         return "ok";
     }
 
+    /**
+     * 非阻塞消费，有如下问题:
+     *  1）、如果生产者速度大于消费者消费速度，消息队列长度会一直增大，时间久了会占用大量内存空间。
+     *  2）、如果睡眠时间过长，这样不能处理一些时效性的消息，睡眠时间过短，也会在连接上造成比较大的开销。
+     * @return
+     */
     @GetMapping("/consume")
     public Object consume(){
         boolean loop = true;
         ListOperations listOperations = redisTemplate.opsForList();
         int total = 0;
-        while (loop){
+        while (true){
 
             Object o = listOperations.rightPop(MESSAGE_KEY);
-            if (StringUtils.isEmpty(o)){
-                loop = false;
-                break;
-            }
+//            if (StringUtils.isEmpty(o)){
+//                loop = false;
+//                break;
+//            }
             total ++;
-            String s = o.toString();
-            log.info(s);
-            MessageQueue queue = JackSonUtils.getInstance().toObject(s, MessageQueue.class);
-            log.info("redis队列消费:{}",queue);
+            try {
+                Thread.sleep(2000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            String threadName = Thread.currentThread().getName();
+            log.info(o+threadName);
+//            MessageQueue queue = JackSonUtils.getInstance().toObject(o.toString(), MessageQueue.class);
+//            log.info("redis队列消费:{}",queue);
         }
 
-        return "共消费到"+total+"条";
+//        return "共消费到"+total+"条";
+    }
+
+    @GetMapping("/bConsume")
+    public Object bConsume(){
+        boolean loop = true;
+        int total = 0;
+        while (true){
+            ListOperations listOperations = redisTemplate.opsForList();
+            Object o = listOperations.rightPop(MESSAGE_KEY,0, TimeUnit.SECONDS);
+//            if (StringUtils.isEmpty(o)){
+//                loop = false;
+//                break;
+//            }
+            total ++;
+            try {
+                Thread.sleep(2000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            String threadName = Thread.currentThread().getName();
+            log.info(o+threadName);
+//            MessageQueue queue = JackSonUtils.getInstance().toObject(o.toString(), MessageQueue.class);
+//            log.info("redis队列消费:{}",queue);
+        }
+
+//        return "共消费到"+total+"条";
     }
 
     @GetMapping("/Rewrite/{value}")
