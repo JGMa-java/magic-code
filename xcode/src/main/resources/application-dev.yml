@@ -36,3 +36,7 @@ spring:
       # template目录映射，thymeleaf
       prefix: /
       suffix: .html
+  redis:
+    host: localhost
+    port: 6379
+    password: 123456
