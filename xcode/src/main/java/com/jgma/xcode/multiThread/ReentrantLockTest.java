@@ -4,15 +4,25 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ * 1.锁
+ * 2.公平锁
+ * 3.非公平锁
+ * 4.响应中断
  * @Author: admin
  */
 public class ReentrantLockTest {
 
     private static final ReentrantLock lock = new ReentrantLock();
+
+    // 公平锁
+    private static final ReentrantLock fairLock = new ReentrantLock(true);
+
+    // 响应中断
+    private static final ReentrantLock lock1 = new ReentrantLock();
+    private static final ReentrantLock lock2 = new ReentrantLock();
 
     /**
      * newCachedThreadPool，可以进行缓存的线程池，意味着它的线程数是最大的，无限的。
@@ -27,7 +37,9 @@ public class ReentrantLockTest {
     public static void main(String[] args) {
 
         for (int i = 0; i < 5; i++) {
-            executorService.submit(new Thread(() -> test()));
+//            executorService.submit(new Thread(() -> test()));
+//            executorService.submit(new Thread(() -> fairLocktest()));
+            executorService.submit(new Thread(() -> notFairLocktest()));
         }
 
         // 如果不需要用到线程池可以关闭
@@ -58,22 +70,88 @@ public class ReentrantLockTest {
 
     }
 
+    /**
+     * 公平锁:
+     * 在锁上等待时间最长的线程将获得锁的使用权。通俗的理解就是谁排队时间最长谁先执行获取锁。
+     */
+    public static void fairLocktest(){
+        final ReentrantLock takeLock = fairLock;
+        for (int i = 0; i < 2; i++) {
+            takeLock.lock();
+            try {
+                count ++;
+                System.out.println(Thread.currentThread().getName()+"获取了锁"+count);
+                TimeUnit.SECONDS.sleep(i);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                takeLock.unlock();
+            }
+        }
+        /**
+         * 结果：有顺序
+         * pool-1-thread-1获取了锁1
+         * pool-1-thread-2获取了锁2
+         * pool-1-thread-3获取了锁3
+         * pool-1-thread-4获取了锁4
+         * pool-1-thread-5获取了锁5
+         *
+         * pool-1-thread-1获取了锁6
+         * pool-1-thread-2获取了锁7
+         * pool-1-thread-3获取了锁8
+         * pool-1-thread-4获取了锁9
+         * pool-1-thread-5获取了锁10
+         */
 
+    }
 
+    /**
+     * 非公平锁:
+     * 非公平锁那就随机的获取，谁运气好，cpu时间片轮到哪个线程，哪个线程就能获取锁，和上面公平锁的区别很简单，
+     * 就在于先new一个ReentrantLock的时候参数为false
+     */
+    public static void notFairLocktest(){
+        final ReentrantLock takeLock = lock;
+        for (int i = 0; i < 2; i++) {
+            takeLock.lock();
+            try {
+                count ++;
+                System.out.println(Thread.currentThread().getName()+"获取了锁"+count);
+                TimeUnit.SECONDS.sleep(i);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                takeLock.unlock();
+            }
+        }
+        /**
+         * 结果：随机的获取
+         * pool-1-thread-1获取了锁1
+         * pool-1-thread-5获取了锁2
+         * pool-1-thread-5获取了锁3
+         * pool-1-thread-2获取了锁4
+         * pool-1-thread-2获取了锁5
+         * pool-1-thread-3获取了锁6
+         * pool-1-thread-3获取了锁7
+         * pool-1-thread-4获取了锁8
+         * pool-1-thread-4获取了锁9
+         * pool-1-thread-1获取了锁10
+         */
 
+    }
 
+    /**
+     * 响应中断
+     */
+    public void breakLock(){
 
+    }
 
+}
+class ThreadDemo implements Runnable{
 
+    @Override
+    public void run() {
 
-
-
-
-
-
-
-
-
-
-
+    }
 }
