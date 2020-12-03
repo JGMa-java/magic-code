@@ -86,6 +86,10 @@ public class RedisCtrl {
 //        return "共消费到"+total+"条";
     }
 
+    /**
+     * 阻塞消费，todo 有bug,超过一段时间会报链接超时redis
+     * @return
+     */
     @GetMapping("/bConsume")
     public Object bConsume(){
         boolean loop = true;
