@@ -38,9 +38,9 @@ public class RedisConfig {
     @Value("${xcode.redis.cache.initialCacheNamesAndDuration}")
     private String[] initialCacheNames;
 
-    private Pattern pattern = Pattern.compile("(?:([-+]?[0-9]+)M)|(?:([-+]?[0-9]+)H)|(?:([-+]?[0-9]+)S)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern pattern = Pattern.compile("(?:([-+]?[0-9]+)M)|(?:([-+]?[0-9]+)H)|(?:([-+]?[0-9]+)S)", Pattern.CASE_INSENSITIVE);
 
-    private String regStr = "m|M|s|S|h|H";
+    private static final String regStr = "m|M|s|S|h|H";
 
     /**
      * 配置redisTemplate序列化方式,使用默认的序列化manager查看会显示乱码
