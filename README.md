@@ -41,3 +41,8 @@ springboot文档：https://docs.spring.io/spring-boot/docs/current/reference/htm
 ###说明
 > redis消息队列及订阅等demo,常见的操作例子
 
+### 7.springCache + redis
+### 创建时间
+> 2020-12-7
+###说明
+> 自定义key过期时间
