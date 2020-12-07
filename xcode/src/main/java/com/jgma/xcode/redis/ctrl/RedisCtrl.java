@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -120,6 +121,7 @@ public class RedisCtrl {
     public Object Rewrite(@PathVariable(name = "value") String value) {
         ValueOperations valueOperations = redisTemplate.opsForValue();
         valueOperations.set("testRewrite", value);
+        redisTemplate.expire("testRewrite", Duration.ofMinutes(15L));
         return "ok";
     }
 

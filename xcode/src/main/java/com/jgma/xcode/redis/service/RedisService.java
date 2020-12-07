@@ -18,7 +18,7 @@ public class RedisService {
         result.put("2", "字符串2");
     }
 
-    @Cacheable(key = "#key", value = "testRewrite")
+    @Cacheable(key = "#key",value = "testCacheMap",cacheManager = "cacheManager")
     public Object get(String key) {
         System.out.println("我是测试cache，service返回的。。。");
         return result.get(key);

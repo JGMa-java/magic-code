@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 消息队列
  * @Author: admin
  */
 public class MessageProducer extends Thread{
