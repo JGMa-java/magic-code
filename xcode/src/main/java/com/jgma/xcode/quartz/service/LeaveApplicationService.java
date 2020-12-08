@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  */
 @Service
 public class LeaveApplicationService {
-    @Autowired
+    @Autowired(required = false)
     private Scheduler scheduler;
 
     // 省略其他方法与其他依赖
