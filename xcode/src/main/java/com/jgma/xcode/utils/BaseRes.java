@@ -6,46 +6,24 @@ public class BaseRes implements Serializable {
 
 	private static final long serialVersionUID = 5023007363066294795L;
 
-	public int retCode;
-	public String message;
+	public Integer status;
+	public String msg;
 	public Object data;
-	
-	public BaseRes() {
-		this(RetCode.RET_OK,"",null);
-	}
-	
-	public BaseRes(int retCode) {
-		this(retCode, "", null);
-	}
-	
-	public BaseRes(Object data) {
-		this(RetCode.RET_OK, "", data);
-	}
-	
-	public BaseRes(int retCode, String msg) {
-		this(retCode, msg, null);
-	}
-	
-	public BaseRes(int retCode, String message, Object data) {
-		this.retCode = retCode;
-		this.message = message;
-		this.data = data;
+
+	public Integer getStatus() {
+		return status;
 	}
 
-	public int getRetCode() {
-		return retCode;
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
-	public void setRetCode(int retCode) {
-		this.retCode = retCode;
+	public String getMsg() {
+		return msg;
 	}
 
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
+	public void setMsg(String msg) {
+		this.msg = msg;
 	}
 
 	public Object getData() {
@@ -56,25 +34,41 @@ public class BaseRes implements Serializable {
 		this.data = data;
 	}
 
-	public static BaseRes ok(int retCode , String msg) {
-		BaseRes res = new BaseRes(retCode,msg);
-		return res;
+	public static BaseRes ok() {
+		return new BaseRes(RetCode.RET_OK, "success", null);
 	}
 
-	public static BaseRes ok() {
-		BaseRes res = new BaseRes(RetCode.RET_OK,"success");
-		return res;
+	public static BaseRes ok(String msg) {
+		return new BaseRes(RetCode.RET_OK, msg, null);
 	}
-	public BaseRes put(Object o) {
-		this.data = o;
+
+	public static BaseRes ok(String msg, Object obj) {
+		return new BaseRes(RetCode.RET_OK, msg, obj);
+	}
+
+	public static BaseRes error() {
+		return new BaseRes(RetCode.RET_ERROR, "error", null);
+	}
+
+	public static BaseRes error(String msg) {
+		return new BaseRes(RetCode.RET_ERROR, msg, null);
+	}
+
+	public static BaseRes error(String msg, Object obj) {
+		return new BaseRes(RetCode.RET_ERROR, msg, obj);
+	}
+
+	public BaseRes put(Object obj){
+		this.data = obj;
 		return this;
 	}
-	public static BaseRes err(int retCode , String msg) {
-		BaseRes res = new BaseRes(retCode,msg);
-		return res;
+
+	private BaseRes() {
 	}
-	public static BaseRes err(String msg) {
-		BaseRes res = new BaseRes(RetCode.RET_ERROR,msg);
-		return res;
+
+	private BaseRes(Integer status, String msg, Object data) {
+		this.status = status;
+		this.msg = msg;
+		this.data = data;
 	}
 }
