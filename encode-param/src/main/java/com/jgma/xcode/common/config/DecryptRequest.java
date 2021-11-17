@@ -17,20 +17,40 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 
 /**
+ * RequestBodyAdvice 在你使用了 @RequestBody 注解的时候才会生效，换言之，前后端都是 JSON 交互的时候，这两个才有用。
+ * 继承自 RequestBodyAdviceAdapter 类，该类是 RequestBodyAdvice 接口的子类，并且实现了接口中的一些方法，
+ * 这样当我们继承自 RequestBodyAdviceAdapter 时，就只需要根据自己实际需求实现某几个方法即可。
  * @Author: admin
  */
 @EnableConfigurationProperties(EncryptProperties.class)
 @ControllerAdvice
 public class DecryptRequest extends RequestBodyAdviceAdapter {
 
-    @Autowired(required = false)
+    @Autowired
     EncryptProperties encryptProperties;
 
+    /**
+     * 该方法用来判断哪些接口需要处理接口解密，我们这里的判断逻辑是方法上或者参数上含有 @Decrypt 注解的接口，处理解密问题。
+     * @param methodParameter
+     * @param targetType
+     * @param converterType
+     * @return
+     */
     @Override
     public boolean supports(MethodParameter methodParameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) {
         return methodParameter.hasMethodAnnotation(Decrypt.class) || methodParameter.hasParameterAnnotation(Decrypt.class);
     }
 
+    /**
+     * 这个方法会在参数转换成具体的对象之前执行，
+     * 我们先从流中加载到数据，然后对数据进行解密，解密完成后再重新构造 HttpInputMessage 对象返回。
+     * @param inputMessage
+     * @param parameter
+     * @param targetType
+     * @param converterType
+     * @return
+     * @throws IOException
+     */
     @Override
     public HttpInputMessage beforeBodyRead(final HttpInputMessage inputMessage, MethodParameter parameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) throws IOException {
         byte[] body = new byte[inputMessage.getBody().available()];
