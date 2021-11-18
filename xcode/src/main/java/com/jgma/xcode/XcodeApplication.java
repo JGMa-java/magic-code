@@ -2,10 +2,12 @@ package com.jgma.xcode;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication
 @EnableCaching
+@ServletComponentScan("com.jgma.xcode.filters")
 public class XcodeApplication {
 
     public static void main(String[] args) {

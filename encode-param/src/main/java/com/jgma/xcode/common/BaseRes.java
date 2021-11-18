@@ -22,16 +22,16 @@ public class BaseRes {
         return new BaseRes(ResConstant.RET_OK, msg, obj);
     }
 
-    public static BaseRes error() {
-        return new BaseRes(ResConstant.RET_ERROR, "error", null);
-    }
-
     public static BaseRes error(String msg) {
         return new BaseRes(ResConstant.RET_ERROR, msg, null);
     }
 
-    public static BaseRes error(String msg, Object obj) {
-        return new BaseRes(ResConstant.RET_ERROR, msg, obj);
+    public static BaseRes error(Integer code, String msg) {
+        return new BaseRes(code, msg, null);
+    }
+
+    public static BaseRes error(Integer code,String msg, Object obj) {
+        return new BaseRes(code, msg, obj);
     }
 
     private BaseRes() {
