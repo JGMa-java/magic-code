@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      mydb-master: # 主数据源
+        username: root
+        password: 123456
+        url: jdbc:mysql://localhost:3306/xcode?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8
+      mydb-slave: # 从数据源
+        username: txlctest_deploy
+        password: Txlc123!
+        url: jdbc:mysql://192.168.10.210:3306/dbtest_majg?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8
+    driver-class-name: com.mysql.jdbc.Driver
+  encrypt:
+    key: maTxlcJavaikIiez
+mybatis:
+  config-location: classpath:mapper/*.xml

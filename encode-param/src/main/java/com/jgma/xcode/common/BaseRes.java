@@ -10,6 +10,15 @@ public class BaseRes {
     private String msg;
     private Object data;
 
+    public BaseRes() {
+    }
+
+    public BaseRes(Integer status, String msg, Object data) {
+        this.status = status;
+        this.msg = msg;
+        this.data = data;
+    }
+
     public static BaseRes ok() {
         return new BaseRes(ResConstant.RET_OK, "success", null);
     }
@@ -30,17 +39,8 @@ public class BaseRes {
         return new BaseRes(code, msg, null);
     }
 
-    public static BaseRes error(Integer code,String msg, Object obj) {
+    public static BaseRes error(Integer code, String msg, Object obj) {
         return new BaseRes(code, msg, obj);
-    }
-
-    private BaseRes() {
-    }
-
-    private BaseRes(Integer status, String msg, Object data) {
-        this.status = status;
-        this.msg = msg;
-        this.data = data;
     }
 
     public Integer getStatus() {
