@@ -21,7 +21,7 @@ public class DynamicDataSourceConfig {
     }
 
     @Bean
-    @ConfigurationProperties("spring.datasource.mydb-slave")
+    @ConfigurationProperties("spring.datasource.druid.mydb-slave")
     public DataSource mydbSlaveDataSource(){
 
         return DruidDataSourceBuilder.create().build();
