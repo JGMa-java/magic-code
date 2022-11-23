@@ -13,12 +13,16 @@ public class LogCostInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         start = System.currentTimeMillis();
+        httpServletRequest.setAttribute("dbName","master");
+        System.out.println("我来请求了");
         return true;
     }
 
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-        System.out.println("Interceptor cost="+(System.currentTimeMillis()-start));
+        Object dbName = httpServletRequest.getAttribute("dbName");
+
+        System.out.println("Interceptor cost="+(System.currentTimeMillis()-start)+",dbName="+dbName);
     }
 
     @Override
